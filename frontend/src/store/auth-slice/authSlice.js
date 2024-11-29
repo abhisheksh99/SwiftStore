@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
+
 
 const API_ENDPOINT = "http://localhost:3000/api/v1/auth";
 
