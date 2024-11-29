@@ -3,7 +3,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-import userRoutes from "./routes/userRouter.js"
+import userRoutes from "./routes/auth/userRoute.js"
+import adminRoutes from "./routes/admin/adminRoute.js"
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use("/api/v1/auth",userRoutes)
+app.use("/api/v1/admin/products",adminRoutes)
 
 // Start the server
 app.listen(PORT, () => {
