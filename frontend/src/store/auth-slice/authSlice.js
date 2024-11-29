@@ -7,7 +7,7 @@ const API_ENDPOINT = "http://localhost:3000/api/v1/auth";
 
 const initialState = {
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: true,
   user: null,
 };
 
