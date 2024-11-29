@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
+import userRoutes from "./routes/userRouter.js"
 
 dotenv.config();
 
@@ -24,9 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+app.use("/api/v1/auth",userRoutes)
 
 // Start the server
 app.listen(PORT, () => {
