@@ -18,7 +18,7 @@ import Account from "./pages/shopping-view/Account";
 import CheckAuth from "./components/common/CheckAuth";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./store/auth-slice/authSlice";
-import { Loader2 } from "lucide-react";
+import { Skeleton } from "./components/ui/skeleton";
 
 const App = () => {
   const { isAuthenticated, user, isLoading } = useSelector(
@@ -30,7 +30,10 @@ const App = () => {
     dispatch(checkAuth());
   }, [dispatch]);
 
-  if (isLoading) return <Loader2 className="spinner-border text-primary" />;
+  if (isLoading)
+    return (
+      <Skeleton className="w-full max-w-[800px] h-[20px] rounded-full bg-gray-300 animate-pulse shadow-lg" />
+    );
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
