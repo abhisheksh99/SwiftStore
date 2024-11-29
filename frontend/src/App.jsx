@@ -15,21 +15,40 @@ import Home from "./pages/shopping-view/Home";
 import ProductsListing from "./pages/shopping-view/ProductsListing";
 import Checkout from "./pages/shopping-view/Checkout";
 import Account from "./pages/shopping-view/Account";
+import CheckAuth from "./components/common/CheckAuth";
 
 const App = () => {
+
+  const isAuthenticated=false;
+  const user =null;
+  
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       {/* Define application routes */}
       <Routes>
         {/* Authentication Routes */}
-        <Route path="/auth" element={<AuthLayout />}>
+        <Route
+          path="/auth"
+          element={
+            <CheckAuth>
+              <AuthLayout />
+            </CheckAuth>
+          }
+        >
           {/* Login and Register nested routes under /auth */}
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
 
         {/* Admin Panel Routes */}
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route
+          path="/admin"
+          element={
+            <CheckAuth>
+              <AdminLayout />
+            </CheckAuth>
+          }
+        >
           {/* Admin-specific views */}
           <Route path="dashoard" element={<AdminDashboard />} />
           <Route path="orders" element={<AdminOrders />} />
@@ -38,7 +57,14 @@ const App = () => {
         </Route>
 
         {/* Shopping View Routes */}
-        <Route path="/shop" element={<ShoppingLayout />}>
+        <Route
+          path="/shop"
+          element={
+            <CheckAuth>
+              <ShoppingLayout />
+            </CheckAuth>
+          }
+        >
           {/* Shopping-related views */}
           <Route path="home" element={<Home />} />
           <Route path="listing" element={<ProductsListing />} />
