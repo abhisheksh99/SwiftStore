@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import AuthLayout from "./components/auth/AuthLayout";
 import Register from "./pages/auth/Register";
@@ -16,12 +16,22 @@ import ProductsListing from "./pages/shopping-view/ProductsListing";
 import Checkout from "./pages/shopping-view/Checkout";
 import Account from "./pages/shopping-view/Account";
 import CheckAuth from "./components/common/CheckAuth";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuth } from "./store/auth-slice/authSlice";
+import { Loader2 } from "lucide-react";
 
 const App = () => {
+  const { isAuthenticated, user, isLoading } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
 
-  const isAuthenticated=false;
-  const user =null;
-  
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
+  if (isLoading) return <Loader2 className="spinner-border text-primary" />;
+
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       {/* Define application routes */}
@@ -30,7 +40,7 @@ const App = () => {
         <Route
           path="/auth"
           element={
-            <CheckAuth>
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
               <AuthLayout />
             </CheckAuth>
           }
@@ -44,13 +54,13 @@ const App = () => {
         <Route
           path="/admin"
           element={
-            <CheckAuth>
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
               <AdminLayout />
             </CheckAuth>
           }
         >
           {/* Admin-specific views */}
-          <Route path="dashoard" element={<AdminDashboard />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="features" element={<AdminFeature />} />
           <Route path="products" element={<AdminProducts />} />
@@ -60,7 +70,7 @@ const App = () => {
         <Route
           path="/shop"
           element={
-            <CheckAuth>
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
               <ShoppingLayout />
             </CheckAuth>
           }

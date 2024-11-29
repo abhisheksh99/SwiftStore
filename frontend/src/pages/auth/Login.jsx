@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link} from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { toast } from 'sonner'
 import CommonForm from '@/components/common/Form'
 import { loginFormControls } from '@/config'
+import { loginUser } from '@/store/auth-slice/authSlice' 
 
 const initialState = {
   email: "",
@@ -10,10 +13,27 @@ const initialState = {
 
 const Login = () => {
   const [formData, setFormData] = useState(initialState);
+  const dispatch = useDispatch();
+
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // Add your login logic here
+    dispatch(loginUser(formData))
+      .unwrap()
+      .then((data) => {
+        if (data.success) {
+          toast.success('Login successful!');
+        } else {
+          toast.error(data.message || 'Login failed');
+        }
+       
+      })
+      
+      
+      .catch((error) => {
+        console.error("Login failed:", error);
+        toast.error(error.message || 'An error occurred during login');
+      });
   };
 
   return (
@@ -23,7 +43,7 @@ const Login = () => {
           Sign in to your account
         </h1>
         <p className="mt-2">
-          Don't have an account
+          Don't have an account?
           <Link
             className="font-medium ml-2 text-primary hover:underline"
             to="/auth/register"

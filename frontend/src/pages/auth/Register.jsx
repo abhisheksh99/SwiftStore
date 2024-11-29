@@ -1,7 +1,10 @@
-import CommonForm from '@/components/common/Form'
-import { registerFormControls } from '@/config'
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import CommonForm from '@/components/common/Form';
+import { registerFormControls } from '@/config';
+import { registerUser } from '@/store/auth-slice/authSlice';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const initialState = {
   userName: "",
@@ -11,10 +14,25 @@ const initialState = {
 
 const Register = () => {
   const [formData, setFormData] = useState(initialState);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // Add your submit logic here
+    dispatch(registerUser(formData))
+      .unwrap()
+      .then((data) => {
+        if (data.success) {
+          toast.success('Registration successful!');
+          navigate("/auth/login");
+        } else {
+          toast.error(data.message || 'Registration failed');
+        }
+      })
+      .catch((error) => {
+        console.error("Registration failed:", error);
+        toast.error(error.message || 'An error occurred during registration');
+      });
   };
 
   return (
@@ -24,7 +42,7 @@ const Register = () => {
           Create new account
         </h1>
         <p className="mt-2">
-          Already have an account
+          Already have an account?
           <Link
             className="font-medium ml-2 text-primary hover:underline"
             to="/auth/login"
@@ -41,7 +59,7 @@ const Register = () => {
         onSubmit={onSubmit}
       />
     </div>
-  )
+  );
 }
 
-export default Register
+export default Register;
