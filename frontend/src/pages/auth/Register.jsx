@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const initialState = {
-  userName: "",
+  name: "",
   email: "",
   password: "",
 };
